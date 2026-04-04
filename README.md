@@ -1,7 +1,9 @@
 # 댕댕이 서바이벌 (Pup Survivors)
+> 써드파티 에셋 라이센스로 인해 전체 프로젝트가 아닌 C# 스크립트만 포함
 
-> 로그라이트 / 뱀파이어 서바이벌 류 | Unity, C# | 1인 개발 | PC · 모바일
+> 로그라이트 / 뱀파이어 서바이벌 류 | Unity | 1인 개발 | PC · 모바일 | 미출시
 
+### 플레이 영상
 [![플레이 영상](https://img.youtube.com/vi/uemJe7yG4UM/0.jpg)](https://youtu.be/uemJe7yG4UM)
 
 ---
@@ -36,7 +38,7 @@
 
 ## 핵심 코드 구조
 
-### v2 — Job System 적용 버전
+### v2 — Job System 적용
 
 ```
 v2/Assets/
@@ -54,7 +56,7 @@ v2/Assets/
 v1/Assets/
 ├── 01_Player/
 │   ├── Equipment/
-│   │   ├── Weapon/              # 활·방패·클로·유성·하키 등 (상속 구조)
+│   │   ├── Weapon/              # 활·방패·클로·유성 등 (상속 구조)
 │   │   └── Accessory/           # 15종 악세서리
 │   └── PlayerController*.cs     # 상태머신, 입력, 스킬 (partial)
 ├── 02_Enemy/
@@ -62,7 +64,7 @@ v1/Assets/
 │   └── CommonEnemy.cs
 └── 03_Stage/
       ├── 00_Manager/StageManager*.cs   # 스테이지 서브시스템 (partial)
-      ├── 99_PathFinder/           # ★ Flow Field v1 (Job System 적용 전)
+      ├── 99_PathFinder/           # Flow Field v1 (Job System 적용 전) ★ 
       ├── Object/Item/             # 경험치·회복 아이템
       └── EnemySpawner.cs
 ```
