@@ -27,11 +27,36 @@
 
 ### Flow Field 기반 길찾기
 
-수백 마리의 몬스터가 존재하는 환경에서 각자 A*를 연산하는 대신, 타일마다 플레이어 방향을 BFS로 사전 계산하여 몬스터 수와 무관하게 **타일 영역 크기만큼만** 연산합니다.
+처음엔 BFS에서 영감을 얻어 자체 재귀 구현을 시도했지만, 성능 한계로 커뮤니티에서 Flow Field라는 키워드를 찾았고 GDC 자료를 참고해 재구현했습니다.
+
+수백 마리의 몬스터가 각자 A*를 연산하는 대신, **타일마다 플레이어 방향을 BFS로 사전 계산**합니다. 몬스터 수가 늘어도 연산량은 타일 영역 크기에만 비례합니다.
 
 ### Unity Job System 멀티스레딩
 
-초기화(셀 독립) → `IJobParallelFor`, BFS 탐색(이전 셀 의존) → `IJob` 으로 분리 스케줄링.
+지상/공중 2가지 이동 타입 × 4인 플레이 조합으로 연산량이 늘어나면서 최적화가 필요했습니다.
+
+```csharp
+// FlowField.cs — Ground/Air 두 FlowField를 병렬로 갱신
+public JobHandle UpdateFlowField()
+{
+    // Reset: 각 셀이 독립적 → IJobParallelFor (병렬)
+    var resetGroundJob = new ResetFlowFieldJob { ... };
+    var resetAirJob    = new ResetFlowFieldJob { ... };
+    var resetGroundHandle = resetGroundJob.Schedule(RowSize * ColSize, 32);
+    var resetAirHandle    = resetAirJob.Schedule(RowSize * ColSize, 32);
+
+    // BFS: 이전 셀 결과에 의존 → IJob (순차), Reset 완료 후 시작
+    var updateGroundJob = new UpdateFlowFieldJob { FlowField = GroundCells, ... };
+    var updateAirJob    = new UpdateFlowFieldJob { FlowField = AirCells,    ... };
+    var updateGroundHandle = updateGroundJob.Schedule(resetGroundHandle);
+    var updateAirHandle    = updateAirJob.Schedule(resetAirHandle);
+
+    return JobHandle.CombineDependencies(updateGroundHandle, updateAirHandle);
+}
+```
+
+초기화 단계는 셀 간 의존이 없어 `IJobParallelFor`로 병렬 처리하고, BFS 탐색은 이전 셀 결과에 의존하기 때문에 `IJob`으로 분리했습니다. Reset → BFS 순서는 Job 의존성 체인으로 보장합니다.
+
 지상/공중 타입 × 4인 플레이 기준 **4ms → 0.5ms (약 8배 향상)**.
 
 ---
@@ -64,7 +89,7 @@ v1/Assets/
 │   └── CommonEnemy.cs
 └── 03_Stage/
       ├── 00_Manager/StageManager*.cs   # 스테이지 서브시스템 (partial)
-      ├── 99_PathFinder/           # Flow Field v1 (Job System 적용 전) ★ 
+      ├── 99_PathFinder/           # Flow Field v1 (Job System 적용 전) ★
       ├── Object/Item/             # 경험치·회복 아이템
       └── EnemySpawner.cs
 ```
