@@ -3,10 +3,8 @@
 
 > 로그라이트 / 뱀파이어 서바이벌 류 | Unity, C# | 1인 개발 | PC · 모바일 | 미출시
 
-<img src="https://github.com/user-attachments/assets/54895e1f-69ce-4bba-946b-63bf4422ca5e" width="440" />
-
 ### 플레이 영상
-[![플레이 영상](https://img.youtube.com/vi/uemJe7yG4UM/0.jpg)](https://youtu.be/uemJe7yG4UM)
+🔗 [플레이 영상](https://youtu.be/uemJe7yG4UM)
 
 ---
 
