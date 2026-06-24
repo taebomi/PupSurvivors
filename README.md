@@ -3,6 +3,8 @@
 
 > 로그라이트 / 뱀파이어 서바이벌 류 | Unity, C# | 1인 개발 | PC · 모바일 | 미출시
 
+<img src="https://github.com/user-attachments/assets/54895e1f-69ce-4bba-946b-63bf4422ca5e" width="440" />
+
 ### 플레이 영상
 [![플레이 영상](https://img.youtube.com/vi/uemJe7yG4UM/0.jpg)](https://youtu.be/uemJe7yG4UM)
 
@@ -59,7 +61,7 @@
 **동기** — 4인 코옵 + 지상/공중 타입이 더해지자 매 프레임 갱신할 Flow Field가
 8개로 늘어 메인 스레드가 병목이 됐습니다.
 
-<img src="https://github.com/user-attachments/assets/54895e1f-69ce-4bba-946b-63bf4422ca5e" width="440" />
+<img src="https://github.com/user-attachments/assets/ad61998e-e75c-4a65-ad65-199fd78f61bf" width="440" />
 
 *△ 4인 플레이 + 지상/공중 타입 길찾기 (분홍: 방향 · 노랑: 장애물 · 하늘: 경로 없음)*
 
