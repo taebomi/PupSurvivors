@@ -94,32 +94,32 @@ return JobHandle.CombineDependencies(updateGroundHandle, updateAirHandle);
 
 | 기존 (싱글스레딩) | 개선 (Job System + Burst) |
 |:--:|:--:|
-| <img src="https://github.com/user-attachments/assets/9e0a4b36-8529-40c5-87e1-c9a943ef0feb" width="380" /> | <img src="https://github.com/user-attachments/assets/865eed2a-e3dc-47e2-b308-9af146f696e1" width="380" /> |
+| <img src="https://github.com/user-attachments/assets/865eed2a-e3dc-47e2-b308-9af146f696e1" width="380" /> | <img src="https://github.com/user-attachments/assets/9e0a4b36-8529-40c5-87e1-c9a943ef0feb" width="380" /> |
 
 ---
 
 ## 핵심 코드 구조
 
 ### v2 — Job System 적용 (최적화 버전)
-```
+<pre>
 v2/Assets/03_Stage/System/PathFind/
-├── PathFinder.cs            # 관리·갱신 진입점
-├── CostField.cs             # 장애물 정보 (타일 비용)
-├── FlowField.cs             # 방향 데이터 + Job 스케줄링
-├── ResetFlowFieldJob.cs     # 초기화 (IJobParallelFor)
-├── UpdateFlowFieldJob.cs    # BFS 탐색 (IJob)
-└── PathFinderDebugger.cs    # 방향·BFS 전파 시각화
-```
+├── <a href="v2/Assets/03_Stage/System/PathFind/PathFinder.cs">PathFinder.cs</a>            # 관리·갱신 진입점
+├── <a href="v2/Assets/03_Stage/System/PathFind/CostField.cs">CostField.cs</a>             # 장애물 정보 (타일 비용)
+├── <a href="v2/Assets/03_Stage/System/PathFind/FlowField.cs">FlowField.cs</a>             # 방향 데이터 + Job 스케줄링
+├── <a href="v2/Assets/03_Stage/System/PathFind/ResetFlowFieldJob.cs">ResetFlowFieldJob.cs</a>     # 초기화 (IJobParallelFor)
+├── <a href="v2/Assets/03_Stage/System/PathFind/UpdateFlowFieldJob.cs">UpdateFlowFieldJob.cs</a>    # BFS 탐색 (IJob)
+└── <a href="v2/Assets/03_Stage/System/PathFind/PathFinderDebugger.cs">PathFinderDebugger.cs</a>    # 방향·BFS 전파 시각화
+</pre>
 
 ### v1 — 전체 게임 구조
-```
+<pre>
 v1/Assets/
-├── 01_Player/
-│   ├── Equipment/{Weapon, Accessory}/   # 무기·악세서리 상속 구조
-│   └── PlayerController*.cs              # 상태머신·입력·스킬 (partial 분리)
-├── 02_Enemy/                            # 적 베이스·매니저
+├── <a href="v1/Assets/01_Player">01_Player/</a>
+│   ├── <a href="v1/Assets/01_Player/Equipment">Equipment/{Weapon, Accessory}/</a>   # 무기·악세서리 상속 구조
+│   └── <a href="v1/Assets/01_Player">PlayerController*.cs</a>              # 상태머신·입력·스킬 (partial 분리)
+├── <a href="v1/Assets/02_Enemy">02_Enemy/</a>                            # 적 베이스·매니저
 └── 03_Stage/
-    ├── 00_Manager/StageManager*.cs      # 스테이지 서브시스템 (partial 분리)
-    ├── 99_PathFinder/                   # Flow Field v1 (Job 적용 전) ★
-    └── Object/Item/                     # 경험치·회복 아이템
-```
+    ├── <a href="v1/Assets/03_Stage/00_Manager">00_Manager/StageManager*.cs</a>      # 스테이지 서브시스템 (partial 분리)
+    ├── <a href="v1/Assets/03_Stage/99_PathFinder/TempPathFinder.cs">99_PathFinder/TempPathFinder.cs</a>  # BFS Flow Field 본체 — 적 이동·스폰 전체가 사용 (단일 스레드) ★
+    └── <a href="v1/Assets/03_Stage/Object/Item">Object/Item/</a>                     # 경험치·회복 아이템
+</pre>
